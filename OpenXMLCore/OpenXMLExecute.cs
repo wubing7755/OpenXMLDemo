@@ -9,17 +9,45 @@ namespace OpenXMLCore
     {
         public static void CreateDocx(string filePath)
         {
+            using (WordprocessingDocument doc = WordprocessingDocument.Create(filePath, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+            {
+                // Add a main document part. 
+                MainDocumentPart mainPart = doc.AddMainDocumentPart();
+
+                // Create the document structure and add some text.
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+                Paragraph para = body.AppendChild(new Paragraph());
+                Run run = para.AppendChild(new Run());
+
+                // String msg contains the text, "Hello, Word!"
+                run.AppendChild(new Text("Hello, Word!"));
+            }
+        }
+
+        public static void SetMainTitle(Document document, string title)
+        {
+            
+        }
+
+        public static void AddNewPart(string document)
+        {
             // Create a new word processing document.
             WordprocessingDocument wordDoc =
-                WordprocessingDocument.Create(filePath,
-                WordprocessingDocumentType.Document);
+               WordprocessingDocument.Create(document,
+               WordprocessingDocumentType.Document);
 
             // Add the MainDocumentPart part in the new word processing document.
             var mainDocPart = wordDoc.AddNewPart<MainDocumentPart>
         ("application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml", "rId1");
             mainDocPart.Document = new Document();
 
-            AddDocxContent(wordDoc, mainDocPart);
+            // Add Content
+            Body body = mainDocPart.Document.AppendChild(new Body());
+            Paragraph para = body.AppendChild(new Paragraph());
+            Run run = para.AppendChild(new Run());
+            // String msg contains the text, "Hello, Word!"
+            run.AppendChild(new Text("Hello, Word!"));
 
             // Add the CustomFilePropertiesPart part in the new word processing document.
             var customFilePropPart = wordDoc.AddCustomFilePropertiesPart();
@@ -45,14 +73,7 @@ namespace OpenXMLCore
             // Add the ThumbnailPart part in the new word processing document.
             wordDoc.AddNewPart<ThumbnailPart>("image/jpeg", "rId6");
 
-            wordDoc.Save();
-
             wordDoc.Dispose();
-        }
-
-        private static void AddDocxContent(WordprocessingDocument wordDoc, MainDocumentPart mainDocPart)
-        {
-
         }
     }
 

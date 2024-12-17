@@ -13,7 +13,8 @@
                 fileName += ".docx";
             }
 
-            OpenXMLExecute.CreateDocx(@"C:\Users\usr\Code\MyProject\OpenXMLDemo" + fileName);
+            //OpenXMLExecute.CreateDocx(@"C:\Users\usr\Code\MyProject\OpenXMLDemo\" + fileName);
+            //OpenXMLExecute.AddNewPart(@"C:\Users\usr\Code\MyProject\OpenXMLDemo\" + fileName);
         }
     }
 }
