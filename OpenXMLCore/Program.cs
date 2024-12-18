@@ -8,13 +8,16 @@
 
             string fileName = Console.ReadLine();
 
-            if(!fileName.EndsWith(".docx"))
+            if (!fileName.EndsWith(".docx"))
             {
                 fileName += ".docx";
             }
 
-            //OpenXMLExecute.CreateDocx(@"C:\Users\usr\Code\MyProject\OpenXMLDemo\" + fileName);
-            //OpenXMLExecute.AddNewPart(@"C:\Users\usr\Code\MyProject\OpenXMLDemo\" + fileName);
+            string filePath = @"C:\Users\usr\Code\MyProject\OpenXMLDemo\" + fileName;
+
+            OpenXMLExecute.RunProcess(filePath);
+
+            //Console.WriteLine($"表达式计算：{OpenXMLExecute.ValidExpression<long>(9223372036854775807, 50, "/")}");
         }
     }
 }
