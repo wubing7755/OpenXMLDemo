@@ -1,23 +1,34 @@
-﻿namespace OpenXMLCore
+﻿using Microsoft.Extensions.Configuration;
+using System.Reflection;
+
+namespace OpenXMLCore
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            string appsettingsFilePath = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
+
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(basePath: appsettingsFilePath)
+                .AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
+                .Build();
+
+            Appsettings appSettings = configuration.GetSection("Appsettings").Get<Appsettings>();
+
             Console.WriteLine("please input the file name:");
 
-            string fileName = Console.ReadLine();
+            string fileName = Console.ReadLine() ?? "temp.docx";
 
             if (!fileName.EndsWith(".docx"))
             {
                 fileName += ".docx";
             }
 
-            string filePath = @"C:\Users\usr\Code\MyProject\OpenXMLDemo\" + fileName;
+            appSettings.FilePath = Path.Combine(appSettings.FilePath, fileName);
 
-            OpenXMLExecute.RunProcess(filePath);
-
-            //Console.WriteLine($"表达式计算：{OpenXMLExecute.ValidExpression<long>(9223372036854775807, 50, "/")}");
+            OpenXMLProcessor execute = new OpenXMLProcessor(appSettings.FilePath, appSettings.ImgPath);
+            execute.RunProcess();
         }
     }
 }
